@@ -817,3 +817,149 @@ L102 — Ops manual — Channel open/close, rebalance, payout monitoring. — �
 L103 — Audit guide — Ledger export format and verification procedure. — 🧩 PLANNED
 
 L104 — Troubleshooting — Stuck invoice, liquidity shortage, fee calc mismatch. — 🧩 PLANNED
+
+4.6 WEB UI & MMI INTERFACES — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+The web front-end layer contains two surfaces:
+
+Public UI — hosted at hh-pool.org for miners and observers (Pool stats, Network, Nodes, Info pages).
+
+Node MMI (Management Interface) — served locally on each Hyper Node for configuration and Lightning control.
+
+Both share a common design system and API layer.
+
+Repository, Framework, and Build System
+
+W001 — Create repo hyperhash-ui — Base Quasar/React workspace; license, CI bootstrap. — 🧩 PLANNED
+
+W002 — Front-end framework — Choose React + Vite + Tailwind; enable shadcn/ui + Recharts. — 🧩 PLANNED
+
+W003 — TypeScript baseline — tsconfig.json, ESLint, Prettier, husky pre-commit. — 🧩 PLANNED
+
+W004 — Storybook setup — Component isolation + snapshot testing. — 🧩 PLANNED
+
+W005 — GitHub Actions CI — Lint, build, test, deploy to staging bucket. — 🧩 PLANNED
+
+W006 — Dockerfile — Multi-stage build → Nginx runtime image. — 🧩 PLANNED
+
+W007 — Systemd unit — hh-ui.service; serve static from /var/www/hyperhash. — 🧩 PLANNED
+
+Global Design System
+
+W010 — Theme tokens — Dark mode default; lane colours; rainbow “Bifrost” accent. — 🧩 PLANNED
+
+W011 — Layout framework — Responsive grid; 16 px base spacing; rounded 2xl. — 🧩 PLANNED
+
+W012 — Icon set — Lucide-React base; mining lane, lightning, bitcoin, node glyphs. — 🧩 PLANNED
+
+W013 — Typography — Inter + Space Mono; weights 400–700; consistent across views. — 🧩 PLANNED
+
+W014 — Animation presets — Framer Motion transitions for miner streams & node links. — 🧩 PLANNED
+
+W015 — Accessibility pass — ARIA roles, keyboard navigation, contrast ≥ 4.5. — 🧩 PLANNED
+
+Public Web UI — Pages & Features
+
+W020 — Index page — Hero animation of Hyper Hash Network; live stats summary. — 🧩 PLANNED
+
+W021 — Network page — Topology diagram: Core ↔ Nodes ↔ Miners; latency heatmap. — 🧩 PLANNED
+
+W022 — Pool page — Real-time hashrate, blocks, payouts, lane colour breakdown. — 🧩 PLANNED
+
+W023 — Miner page — Table of miners (by pubkey/IP); best-hash “game” display. — 🧩 PLANNED
+
+W024 — Node page — List of public Hyper Nodes; uptime, region, TP mode, LN channel state. — 🧩 PLANNED
+
+W025 — Info pages — /info-(network|pool|miner|node|financials) static markdown render. — 🧩 PLANNED
+
+W026 — Search & filter — Fuzzy search across miners/nodes; debounce 300 ms. — 🧩 PLANNED
+
+W027 — Live data polling — WebSocket subscribe to Core metrics; 5 s refresh fallback. — 🧩 PLANNED
+
+W028 — Chart suite — Recharts line/bar for hashrate, block times, payouts. — 🧩 PLANNED
+
+W029 — Error handling — Offline banner; API timeout retry; skeleton loaders. — 🧩 PLANNED
+
+Hyper Node MMI (Local Interface)
+
+W040 — Node dashboard — Summary: uptime, TP mode, LN balance, eligibility. — 🧩 PLANNED
+
+W041 — Lightning panel — Channel list, balances, open/close/rebalance buttons. — 🧩 PLANNED
+
+W042 — Reinvest slider — 0–100 %; immediate API update; visual yield projection. — 🧩 PLANNED
+
+W043 — Withdraw flow — Enter sats → invoice → submit → success toast. — 🧩 PLANNED
+
+W044 — TP/Translator switch — Toggle local ↔ remote; confirmation dialog. — 🧩 PLANNED
+
+W045 — Service controls — Start/stop/restart node components via Agent API. — 🧩 PLANNED
+
+W046 — Update checker — Poll Core for new release; “Update” button; spinner state. — 🧩 PLANNED
+
+W047 — Eligibility tracker — Visual bar: uptime %, LN channel status, sync OK. — 🧩 PLANNED
+
+W048 — Log viewer — Paginated stream; filters: agent, ln, tp, translator. — 🧩 PLANNED
+
+W049 — Settings export — Download full node config + keys summary (redacted). — 🧩 PLANNED
+
+APIs & Data Integration
+
+W060 — API client SDK — Typed wrapper for /v1/core, /v1/telemetry, /v1/treasury. — 🧩 PLANNED
+
+W061 — Auth flow — JWT or mTLS session; refresh tokens; local storage. — 🧩 PLANNED
+
+W062 — Rate-limit back-off — Exponential retry with cap; error toasts. — 🧩 PLANNED
+
+W063 — Metrics aggregation — Client-side smoothing for chart continuity. — 🧩 PLANNED
+
+W064 — Time-series caching — IndexedDB local cache; 24 h expiry. — 🧩 PLANNED
+
+Telemetry, Logging, and Analytics
+
+W070 — Prometheus scrape — Static exporter for Nginx metrics. — 🧩 PLANNED
+
+W071 — Front-end telemetry — Send page-load times and WebSocket latency to Core. — 🧩 PLANNED
+
+W072 — Structured logs — JSON log of user actions (non-PII) for debugging. — 🧩 PLANNED
+
+W073 — Alert banner integration — Show Core-pushed alerts (maintenance, payouts). — 🧩 PLANNED
+
+Security & Compliance
+
+W080 — HTTPS enforcement — HSTS, CSP, no-sniff, referrer-policy headers. — 🧩 PLANNED
+
+W081 — CSRF protection — Double-submit cookie or SameSite =strict. — 🧩 PLANNED
+
+W082 — Input validation — Client-side + server schema for all forms. — 🧩 PLANNED
+
+W083 — Content signing — Verify signed data from Core before render. — 🧩 PLANNED
+
+W084 — Supply-chain audit — npm-audit + Snyk scan; lockfile review in CI. — 🧩 PLANNED
+
+Verification & Testing (Web UI)
+
+W090 — Unit tests — Components, utils, reducers; > 80 % coverage. — 🧩 PLANNED
+
+W091 — Integration tests — API mock → UI render → state update. — 🧩 PLANNED
+
+W092 — E2E tests — Cypress flows: login, payout view, TP toggle, withdraw. — 🧩 PLANNED
+
+W093 — Load test — k6 scenario 500 users; p95 < 300 ms. — 🧩 PLANNED
+
+W094 — Accessibility audit — Axe CLI + manual screen-reader pass. — 🧩 PLANNED
+
+W095 — Cross-browser — Chrome, Edge, Firefox latest; Safari ≥ 17. — 🧩 PLANNED
+
+W096 — Security tests — XSS, CSRF, open-redirect scans. — 🧩 PLANNED
+
+Documentation (Web UI)
+
+W100 — README — Build, run, deploy steps; local + prod examples. — 🧩 PLANNED
+
+W101 — API reference — SDK usage, pagination, errors. — 🧩 PLANNED
+
+W102 — Theme guide — Lane colours, fonts, icons. — 🧩 PLANNED
+
+W103 — MMI manual — Screenshots + control explanations. — 🧩 PLANNED
+
+W104 — Troubleshooting — Common API errors, reconnects, config mismatches. — 🧩 PLANNED
