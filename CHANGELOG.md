@@ -671,3 +671,149 @@ N435 — Security checklist — Hardening steps; backup/restore; key rotation. �
 X092 — Troubleshooting guide — High reject rate, latency spikes, version mismatch tips. — 🧩 PLANNED
 
 X093 — Compatibility matrix — Supported SV1 miner firmware versions and best-known settings. — 🧩 PLANNED
+
+4.5 LIGHTNING TREASURY — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+The Treasury is a dedicated Lightning node cluster operated by Hyper Hash.
+It receives 0.5 % of every block subsidy (pool fee), distributes the other 0.5 % evenly to all eligible Hyper Nodes, and processes miner payouts through manifests received from Core.
+All payouts occur over LN channels; on-chain fallback is available for failsafe settlement.
+
+Repository, Build, and Environment
+
+L001 — Create repo hh-treasury — Source layout (core/, bridge/, scripts/, docs/). — 🧩 PLANNED
+
+L002 — Choose backend — Default to lnd 0.18 or later; pluggable cln adapter. — 🧩 PLANNED
+
+L003 — Toolchain pins — Go/Rust versions; CI caches; make lint test. — 🧩 PLANNED
+
+L004 — Dockerfile — Build lnd + bridge daemon; minimal Alpine runtime. — 🧩 PLANNED
+
+L005 — GH Actions CI — Unit/integration tests; image publish → GHCR. — 🧩 PLANNED
+
+L006 — Systemd unit — hh-treasury.service; Restart=on-failure; hardening opts. — 🧩 PLANNED
+
+Channel & Liquidity Management
+
+L010 — Treasury wallet init — Seed creation, encrypted backup, ops runbook. — 🧩 PLANNED
+
+L011 — Core peering — Establish persistent channels with Hyper Nodes. — 🧩 PLANNED
+
+L012 — Hyper Hash channel — 0.5 % fee share accumulation; route liquidity to corporate wallet. — 🧩 PLANNED
+
+L013 — Channel manager — Monitor capacities, auto-rebalance, fee limits, CLTV delta. — 🧩 PLANNED
+
+L014 — Multi-node cluster — Optional active-active Treasury instances with static channels. — 🧩 PLANNED
+
+L015 — On-chain reserve — Maintain buffer ≥ 0.02 BTC per node for emergency closure. — 🧩 PLANNED
+
+L016 — Liquidity alarms — Trigger if outbound < 20 % or inbound < 15 %. — 🧩 PLANNED
+
+Payout Engine & Ledger Integration
+
+L020 — Payout manifest parser — Consume Core-signed JSON manifest. — 🧩 PLANNED
+
+L021 — Signature verification — Validate JWS; reject altered or expired manifests. — 🧩 PLANNED
+
+L022 — Payment dispatcher — Generate LN invoices; queue payments concurrently. — 🧩 PLANNED
+
+L023 — Batch controller — Group ≤ 50 payments per round; concurrency limits; retry/back-off. — 🧩 PLANNED
+
+L024 — Fee split calculator — 1 % total: 0.5 % → Hyper Hash, 0.5 % → eligible nodes (equal split). — 🧩 PLANNED
+
+L025 — Node eligibility filter — Pull from Core API; apply uptime & channel criteria. — 🧩 PLANNED
+
+L026 — Miner payouts — Distribute block subsidy shares per ledger; attach TX fee to winner miner. — 🧩 PLANNED
+
+L027 — Confirmation reconciler — Verify settlement; mark paid; retry failed invoices. — 🧩 PLANNED
+
+L028 — Reissue flow — Detect stale invoices; request fresh invoice; sign new batch. — 🧩 PLANNED
+
+L029 — Treasury journal DB — Tables: invoices, batches, failures, reconciliations, metrics. — 🧩 PLANNED
+
+L030 — Report exporter — Daily CSV/JSON of payouts and fees for audit. — 🧩 PLANNED
+
+Core Bridge & APIs
+
+L040 — Core Webhook listener — /v1/manifest endpoint for payout notifications. — 🧩 PLANNED
+
+L041 — Treasury status API — /v1/treasury/status returns balances, liquidity, queue. — 🧩 PLANNED
+
+L042 — Payment query API — /v1/payments/{id} shows state and proof. — 🧩 PLANNED
+
+L043 — Admin control API — Pause/resume payouts, rebalance, channel policy update. — 🧩 PLANNED
+
+L044 — RBAC tokens — Roles: treasurer, auditor, ops; rotate weekly. — 🧩 PLANNED
+
+Reinvestment & Yield Controls
+
+L050 — Policy engine — Percent allocation of LN yield → reinvest vs withdraw. — 🧩 PLANNED
+
+L051 — Auto-compounder — Sweep routing fees into Treasury wallet daily. — 🧩 PLANNED
+
+L052 — Node policy hooks — Accept MMI preferences; apply per-node reinvest setting. — 🧩 PLANNED
+
+L053 — Withdrawal queue — Honor partial withdraw requests within caps. — 🧩 PLANNED
+
+L054 — Audit trail — Log every policy change with signature and timestamp. — 🧩 PLANNED
+
+Monitoring & Telemetry
+
+L060 — Prometheus metrics — payouts_total, invoices_failed, rebalance_events, ln_fees_earned. — 🧩 PLANNED
+
+L061 — Grafana dashboards — Payout latency, success rate, liquidity heatmap. — 🧩 PLANNED
+
+L062 — Alert rules — Payment queue > 100, failures > 2 %, liquidity alarm. — 🧩 PLANNED
+
+L063 — Structured logs — JSON w/ txid, invoice, route; redact seeds. — 🧩 PLANNED
+
+L064 — Audit export job — Push signed report daily to secure bucket. — 🧩 PLANNED
+
+Security & Hardening
+
+L070 — mTLS to Core — Rotate certs every 90 days; enforce TLS 1.3. — 🧩 PLANNED
+
+L071 — Key vault — HSM integration for seed and invoice macaroons. — 🧩 PLANNED
+
+L072 — Database encryption — AES-GCM on sensitive fields. — 🧩 PLANNED
+
+L073 — Access controls — Ops login MFA; RBAC scopes enforced per endpoint. — 🧩 PLANNED
+
+L074 — DoS guards — Payment rate limiter; batch size cap. — 🧩 PLANNED
+
+L075 — Supply-chain scan — CI SBOM audit for base images and deps. — 🧩 PLANNED
+
+Verification & Testing (Treasury)
+
+L080 — Unit: fee split math — 1 % split; rounding tests; boundary cases. — 🧩 PLANNED
+
+L081 — Unit: eligibility filter — Only eligible nodes receive reward. — 🧩 PLANNED
+
+L082 — Int: Core manifest flow — Receive manifest → verify → batch → settle → reconcile. — 🧩 PLANNED
+
+L083 — Int: LN payment path — Treasury → Node → settle; simulate fee routes. — 🧩 PLANNED
+
+L084 — Int: Reissue loop — Expired invoice → re-request → retry → success. — 🧩 PLANNED
+
+L085 — Load: 1000 invoices — Validate parallel batch throughput & memory footprint. — 🧩 PLANNED
+
+L086 — Fault: lnd offline — Queue payouts; auto-resume when back online. — 🧩 PLANNED
+
+L087 — Fault: Core down — Cache manifest; re-pull on reconnect. — 🧩 PLANNED
+
+L088 — Security: JWS tamper — Reject bad signature; log alert. — 🧩 PLANNED
+
+L089 — Observability: alerts fire — Simulate liquidity drop; verify Grafana alarm. — 🧩 PLANNED
+
+L090 — Backup restore test — Full DB restore; data integrity check. — 🧩 PLANNED
+
+Documentation (Treasury)
+
+L100 — README — Overview, build, run, connect to Core. — 🧩 PLANNED
+
+L101 — Config guide — TOML/ENV keys for LN paths and fee policies. — 🧩 PLANNED
+
+L102 — Ops manual — Channel open/close, rebalance, payout monitoring. — 🧩 PLANNED
+
+L103 — Audit guide — Ledger export format and verification procedure. — 🧩 PLANNED
+
+L104 — Troubleshooting — Stuck invoice, liquidity shortage, fee calc mismatch. — 🧩 PLANNED
