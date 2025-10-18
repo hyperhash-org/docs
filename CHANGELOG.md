@@ -468,6 +468,206 @@ X090 — README (Hyper Hash Translator) — How to connect SV1 miners to Hyper H
 
 X091 — Config reference — All env/TOML keys with defaults and examples. — 🧩 PLANNED
 
+4.4 HYPER NODE PLANE — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+This section defines everything needed to build, configure, run, and verify Hyper Nodes (Public and Private).
+A Hyper Node bundles: Node Agent, optional local bitcoind, optional local TP (Sjors wrapper), optional Translator, and a mandatory Lightning wallet (lnd or cln).
+Nodes must meet eligibility (≥95% uptime over 7 days, ≥1 open LN channel to Treasury, synced Bitcoin node) for even node-pool rewards.
+
+Repositories, Bundles, and Build System
+
+N301 — Create hh-hypernode-public repo — Compose bundle for public nodes; LICENSE/NOTICE. — 🧩 PLANNED
+
+N302 — Create hh-hypernode-private repo — Partner/operator bundle with extra hooks. — 🧩 PLANNED
+
+N303 — Node Agent repo hh-node-agent — Source layout (agent/, mmi/, telemetry/). — 🧩 PLANNED
+
+N304 — Toolchain pins — Pin Go/Rust/Node versions; pre-commit hooks; fmt/lint. — 🧩 PLANNED
+
+N305 — Dockerfiles (multi-stage) — Agent, lnd/cln sidecars, optional bitcoind, TP-wrapper, Translator. — 🧩 PLANNED
+
+N306 — Makefile/Taskfile — build, test, package, compose up -d. — 🧩 PLANNED
+
+N307 — GitHub Actions CI — Build, unit tests, image push to GHCR; SBOM attach. — 🧩 PLANNED
+
+N308 — Release pipeline — Tag images per component; compat matrix doc. — 🧩 PLANNED
+
+Node Agent (Control, Commands, Updates)
+
+N310 — Agent bootstrap — gRPC/REST local API on localhost:8442; auth token. — 🧩 PLANNED
+
+N311 — Core handshake — mTLS client; register node; fetch signed config seed. — 🧩 PLANNED
+
+N312 — Signed command executor — Verify Core JWS; actions: start/stop/restart/update. — 🧩 PLANNED
+
+N313 — Service supervisor — Manage Docker services; healthcheck orchestration. — 🧩 PLANNED
+
+N314 — Upgrade engine — Pull signed manifest; drain → update → verify → uncordon; rollback on fail. — 🧩 PLANNED
+
+N315 — Config manager — Load from /etc/hyperhash/node-config.toml + ENV; schema validation. — 🧩 PLANNED
+
+N316 — Secrets loader — SOPS/KMS decrypt for macaroons, TLS, RPC creds; in-memory only. — 🧩 PLANNED
+
+N317 — Audit trail — Append-only JSON log for every command (actor, sig, result). — 🧩 PLANNED
+
+N318 — Local auth — MMI bearer token rotation; rate-limit control API. — 🧩 PLANNED
+
+Bitcoin Node (Optional Local)
+
+N320 — bitcoind container — v30 image, pruned or archival selectable. — 🧩 PLANNED
+
+N321 — Config templating — bitcoin.conf generation (rpc, txindex opt-in, blockfilter). — 🧩 PLANNED
+
+N322 — Data volumes — Bind mounts with permissions; fast SSD recommendation doc. — 🧩 PLANNED
+
+N323 — Sync monitor — Track IBD progress; expose blocks vs tip; report to Core. — 🧩 PLANNED
+
+N324 — Health checks — IPC socket probe; mempool stats; reorg watcher. — 🧩 PLANNED
+
+Template Provider (Local/Remote Switch)
+
+N330 — TP wrapper integration — Use Sjors TP wrapper container; share bitcoind socket. — 🧩 PLANNED
+
+N331 — Mode toggle — tp.mode = local|remote in config; enforce single active path. — 🧩 PLANNED
+
+N332 — Remote TP directory — Query Core for nearest TP; fallback list; latency probe. — 🧩 PLANNED
+
+N333 — Hot-switch TP — Seamless swap with minimal job loss; warn miners via pool. — 🧩 PLANNED
+
+N334 — TP telemetry — Template latency, tip lag, mempool size → Core metrics. — 🧩 PLANNED
+
+Translator (Optional, SV1 Support)
+
+N340 — Translator container — SRI translator image; SV1 port 34255; non-root. — 🧩 PLANNED
+
+N341 — Profiles — non-aggregated debug, aggregated prod; vardiff OFF default. — 🧩 PLANNED
+
+N342 — Pool endpoint wiring — Ensure HH pool address & channel flags match. — 🧩 PLANNED
+
+N343 — Translator telemetry — Sessions, shares valid/reject, RTT → Agent → Core. — 🧩 PLANNED
+
+Lightning Wallet (Mandatory)
+
+N350 — Wallet selector — lnd or cln selectable; uniform Agent API. — 🧩 PLANNED
+
+N351 — Seed/init flow — Create wallet; backup seed; store encrypted; ops checklist. — 🧩 PLANNED
+
+N352 — Treasury peering — Connect to Treasury pubkey@host:9735; persist. — 🧩 PLANNED
+
+N353 — Open channel — Enforce min capacity; tag “payout”; save chan ID. — 🧩 PLANNED
+
+N354 — Invoice server — Generate invoices for node reward payouts (idempotent). — 🧩 PLANNED
+
+N355 — Reinvest/withdraw — Implement policy engine; % slider; hard caps. — 🧩 PLANNED
+
+N356 — Auto-rebalance — Periodic rebalance with fee ceiling; configurable cadence. — 🧩 PLANNED
+
+N357 — LN telemetry — Balances, pending HTLCs, routing fees, chan states → Core. — 🧩 PLANNED
+
+N358 — Key/macaroon rotation — Scheduled regeneration; Agent reload without restart. — 🧩 PLANNED
+
+Eligibility Tracker (Reward Qualification)
+
+N360 — Uptime sampler — Sliding window (7 days) with 5-sec samples; ≥95% rule. — 🧩 PLANNED
+
+N361 — Channel check — Verify ≥1 open channel to Treasury; emit state. — 🧩 PLANNED
+
+N362 — Bitcoin sync rule — Require “synced” flag if TP = local; else skip. — 🧩 PLANNED
+
+N363 — Eligibility exporter — Single boolean + reasons; pushed to Core hourly & on change. — 🧩 PLANNED
+
+N364 — Edge cases — Grace period after updates; maintenance windows. — 🧩 PLANNED
+
+Telemetry, Metrics, and Logging
+
+N370 — Prometheus exporter — /metrics for agent: cpu/mem, svc health, RTTs. — 🧩 PLANNED
+
+N371 — Business metrics — share rate (if translator), LN yield, reinvest %, uptime. — 🧩 PLANNED
+
+N372 — Structured logs — JSON with request IDs; redact secrets; Loki labels. — 🧩 PLANNED
+
+N373 — Alerting hints — Local rules: LN balance low, chan closed, TP stale. — 🧩 PLANNED
+
+MMI (Local Management Interface) — API Side
+
+N380 — MMI API surface — Endpoints: /services, /lightning, /eligibility, /updates, /logs. — 🧩 PLANNED
+
+N381 — Actions — Start/stop services; TP mode switch; set reinvest %; withdraw (LN invoice); rotate keys. — 🧩 PLANNED
+
+N382 — AuthZ — Local token + optional mTLS; rate-limit & lockout on failures. — 🧩 PLANNED
+
+N383 — Telemetry pages — Summaries for LN, TP, Translator, bitcoind, system. — 🧩 PLANNED
+
+N384 — Debug bundle — Zip logs + metrics snapshot; download securely. — 🧩 PLANNED
+
+Security Hardening
+
+N390 — mTLS to Core — Cert pinning; renewals 90 days; clock skew tolerance. — 🧩 PLANNED
+
+N391 — Filesystem perms — 600 for secrets; read-only images; tmpfs for sensitive dirs. — 🧩 PLANNED
+
+N392 — Network policy — UFW rules; only SV1, SV2 (if needed), HTTPS, LN ports; no inbound Core. — 🧩 PLANNED
+
+N393 — Rate limits — API & MMI throttles; DoS guard for translator port. — 🧩 PLANNED
+
+N394 — Supply-chain scans — CI CVE gates; base image pinning. — 🧩 PLANNED
+
+Deployment (Compose, Systemd, Optional K8s)
+
+N400 — Compose files — Profiles: public, private, local-tp, remote-tp, translator. — 🧩 PLANNED
+
+N401 — Env templates — .env.example with sane defaults and comments. — 🧩 PLANNED
+
+N402 — Healthchecks — curl localhost:8442/v1/status, lncli ping, tp health, translator health. — 🧩 PLANNED
+
+N403 — Systemd units — hh-node-agent.service; restart/backoff; dependencies. — 🧩 PLANNED
+
+N404 — Host tuning — Sysctl for file descriptors, TCP buffers; clock sync. — 🧩 PLANNED
+
+N405 — Backup hooks — LN seed backup reminder; optional export to encrypted volume. — 🧩 PLANNED
+
+Verification & Testing (Node)
+
+N410 — Unit: config loader — Validate TOML/ENV precedence, defaults, errors. — 🧩 PLANNED
+
+N411 — Unit: signed commands — JWS verify; bad sig rejection; replay protection. — 🧩 PLANNED
+
+N412 — Unit: eligibility rules — Uptime/window math; LN channel; BTC sync toggles. — 🧩 PLANNED
+
+N413 — Int: Core register — Node appears in Core; telemetry flow OK. — 🧩 PLANNED
+
+N414 — Int: Local TP mode — bitcoind + TP produce templates; Core sees metrics. — 🧩 PLANNED
+
+N415 — Int: Remote TP mode — Switch at runtime; minimal job loss. — 🧩 PLANNED
+
+N416 — Int: Translator path — SV1 miner → Translator → Pool → Share accepted. — 🧩 PLANNED
+
+N417 — Int: LN payout — Treasury manifest → invoice → payment → telemetry update. — 🧩 PLANNED
+
+N418 — Fail: treasury down — Payout deferred; auto-resume on recovery. — 🧩 PLANNED
+
+N419 — Fail: reboot node — Services recover; eligibility window intact. — 🧩 PLANNED
+
+N420 — Load: 500 miners — Validate CPU/mem, reject rate, RTT thresholds. — 🧩 PLANNED
+
+N421 — Security: mTLS — Reject wrong CA; expired cert; clock skew. — 🧩 PLANNED
+
+N422 — Observability: alerts — Fire on LN low balance, TP stale >30s, translator reconnect storm. — 🧩 PLANNED
+
+Documentation (Node)
+
+N430 — README (Public) — One-hour quickstart; compose up; connect SV1/SV2 miners. — 🧩 PLANNED
+
+N431 — README (Private) — Partner deployment, peering, support contacts. — 🧩 PLANNED
+
+N432 — Config reference — All keys with examples; local vs remote TP tables. — 🧩 PLANNED
+
+N433 — MMI guide — Screens/flows for wallet, reinvest, withdrawals, updates. — 🧩 PLANNED
+
+N434 — Troubleshooting — Common errors: LN channel, stale templates, auth failures. — 🧩 PLANNED
+
+N435 — Security checklist — Hardening steps; backup/restore; key rotation. — 🧩 PLANNED
+
 X092 — Troubleshooting guide — High reject rate, latency spikes, version mismatch tips. — 🧩 PLANNED
 
 X093 — Compatibility matrix — Supported SV1 miner firmware versions and best-known settings. — 🧩 PLANNED
