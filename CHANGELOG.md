@@ -345,3 +345,129 @@ T072 — Ops runbook — Logs, metrics, restarts, safe rollback to prior tag. �
 T073 — Upgrade procedure — Rebase flow, patch queue conflicts, validation checklist. — 🧩 PLANNED
 
 T074 — Troubleshooting — IPC failures, stale templates, version mismatches. — 🧩 PLANNED
+
+4.3 TRANSLATOR (SV1 ↔ SV2) — USING SRI TRANSLATOR (ALL 🧩 PLANNED)
+
+This section assumes the Stratum V2 Reference Implementation (SRI) Translator is our upstream. We package, pin, and integrate it with hh-pool (SV2), Sjors’ TP, and our Core/MMI. Focus is on version pinning, compatibility, observability, security, and golden tests.
+
+Upstream, Versioning, and Packaging
+
+X001 — Fork or pin SRI Translator repo — Create hh-translator wrapper; record upstream tag/SHA; add NOTICE. — 🧩 PLANNED
+
+X002 — Patch queue scaffolding — patches/ with numbered git am series; CI job applies and fails on drift. — 🧩 PLANNED
+
+X003 — Dockerfile (multi-stage) — Build upstream translator; minimal runtime; non-root user. — 🧩 PLANNED
+
+X004 — GHCR publish — ghcr.io/hyperhash-org/translator:<sri-tag>-hh1 on tags; attach SBOM. — 🧩 PLANNED
+
+X005 — License/SPDX scan — CI step to verify upstream licensing and headers. — 🧩 PLANNED
+
+Runtime Configuration & Profiles
+
+X010 — Config schema — ENV/TOML to set: upstream SV2 pool addr, local SV1 listen addr, vardiff toggle, agg/non-agg channels, timeouts. — 🧩 PLANNED
+
+X011 — Profiles — regtest, signet, mainnet presets with safe defaults. — 🧩 PLANNED
+
+X012 — Vardiff alignment — Ensure translator vardiff is OFF by default; pool controls difficulty to avoid dueling policies. — 🧩 PLANNED
+
+X013 — Channel mode flags — Start non-aggregated (debug) profile; enable aggregated once stable. — 🧩 PLANNED
+
+X014 — Standard Channels enable — Ensure pool & translator both use Standard Channels capability bit. — 🧩 PLANNED
+
+X015 — Noise/TLS pass-through — Do not terminate TLS/noise on LB; document network path. — 🧩 PLANNED
+
+X016 — Health endpoints — Sidecar /healthz HTTP and Prometheus /metrics exporter. — 🧩 PLANNED
+
+Integration with hh-pool (SV2) and Sjors’ TP
+
+X020 — Pool handshake compat — Validate SetupConnection, JobNegotiator, and share submit messages against hh-pool. — 🧩 PLANNED
+
+X021 — Target/difficulty mapping — Ensure translator→pool maps SV1 difficulty to SV2 target identically; add unit vectors. — 🧩 PLANNED
+
+X022 — Share validation parity — Confirm share acceptance semantics (nTime/nonce/extra nonce) match hh-pool rules. — 🧩 PLANNED
+
+X023 — Template path audit — With Sjors’ TP, verify coinbase/merkle branches expectations; TX fee remains assigned to winning miner. — 🧩 PLANNED
+
+X024 — Reconnect semantics — Translator auto-reconnect to pool; exponential backoff; session resume if supported. — 🧩 PLANNED
+
+X025 — Latency budget — Measure translator→pool p95 RTT; set alert threshold. — 🧩 PLANNED
+
+Core & Node Control Hooks
+
+X030 — Core directory entry — Register translator endpoint (SV1 port) with Core over mTLS. — 🧩 PLANNED
+
+X031 — MMI toggles — Start/stop translator; switch agg/non-agg; vardiff toggle; persist in node config. — 🧩 PLANNED
+
+X032 — Telemetry push — Export connected miners, share rate, reject rate, avg difficulty to Core. — 🧩 PLANNED
+
+X033 — Signed commands — Accept Core-signed restart/update commands; verify JWS signature. — 🧩 PLANNED
+
+X034 — Config hot-reload — Apply changes without dropping all sessions where possible. — 🧩 PLANNED
+
+Observability and Logging
+
+X040 — Prometheus metrics — translator_sessions, shares_valid, shares_rejected, rtt_ms, agg_channel_on, vardiff_on. — 🧩 PLANNED
+
+X041 — Structured logs — JSON with session IDs; redact secrets; Loki labels component=translator. — 🧩 PLANNED
+
+X042 — Alert rules — Reject rate > 5 %, RTT > 250 ms, reconnect storm, session auth failures. — 🧩 PLANNED
+
+X043 — Grafana panels — Translator health board and miner intake funnel. — 🧩 PLANNED
+
+Security & Hardening
+
+X050 — mTLS to Core — Translator sidecar posts metrics/heartbeats via mTLS; CA pinning. — 🧩 PLANNED
+
+X051 — Non-root runtime — Drop caps, read-only FS, seccomp profile; only bind SV1 port. — 🧩 PLANNED
+
+X052 — Rate limiting — Per-IP connection limit and handshake flood protection. — 🧩 PLANNED
+
+X053 — DoS guardrails — SYN cookies + LB connection limits; document settings. — 🧩 PLANNED
+
+X054 — Supply-chain scan — Image scanned for CVEs in CI; block on high severity. — 🧩 PLANNED
+
+Verification & Testing (Translator)
+
+X060 — Unit tests: diff/target — Validate SV1 difficulty ↔ SV2 target conversion (boundary cases). — 🧩 PLANNED
+
+X061 — Unit tests: share parser — SV1 share → SV2 submit message encoding/endianness. — 🧩 PLANNED
+
+X062 — Integration: SV1 miner (CGMiner) — CGMiner → Translator → hh-pool → share accepted on Signet. — 🧩 PLANNED
+
+X063 — Integration: Antminer S9/S19 — Real hardware test through translator to hh-pool Signet. — 🧩 PLANNED
+
+X064 — End-to-end: block found — Ensure translator sessions survive round close and payout manifest generation. — 🧩 PLANNED
+
+X065 — Aggregated channel test — Enable aggregated mode; confirm stable share acceptance and latency. — 🧩 PLANNED
+
+X066 — Vardiff off/on test — Verify no conflict with pool difficulty controller; keep OFF by default. — 🧩 PLANNED
+
+X067 — Reorg behavior — Simulate reorg in Sjors’ TP path; verify no share invalidation bug. — 🧩 PLANNED
+
+X068 — Fault injection: pool down — Drop pool; translator reconnects; miners keep sessions alive. — 🧩 PLANNED
+
+X069 — Load test — 1k concurrent SV1 connections on Signet; chart CPU/mem/latency. — 🧩 PLANNED
+
+X070 — Security tests — mTLS to Core enforced; reject invalid CA; log & alert on failed auth. — 🧩 PLANNED
+
+Deployment & Ops
+
+X080 — Systemd unit — hh-translator.service; Restart=on-failure; sane limits. — 🧩 PLANNED
+
+X081 — Compose profile — translator service with env file, healthcheck, depends_on. — 🧩 PLANNED
+
+X082 — K8s (optional) — Deployment with PDB/HPA; ConfigMap for profiles; Service for SV1 port. — 🧩 PLANNED
+
+X083 — Upgrade path — Tag pinning; blue/green upgrade; rollback to prior image. — 🧩 PLANNED
+
+X084 — Runbook — Start/stop, logs, health, common errors, rollback. — 🧩 PLANNED
+
+Documentation (Translator)
+
+X090 — README (Hyper Hash Translator) — How to connect SV1 miners to Hyper Hash via SRI Translator. — 🧩 PLANNED
+
+X091 — Config reference — All env/TOML keys with defaults and examples. — 🧩 PLANNED
+
+X092 — Troubleshooting guide — High reject rate, latency spikes, version mismatch tips. — 🧩 PLANNED
+
+X093 — Compatibility matrix — Supported SV1 miner firmware versions and best-known settings. — 🧩 PLANNED
