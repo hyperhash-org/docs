@@ -16,14 +16,14 @@ All other Hyper Hash repositories (`hyperhash-core`, `hh-pool`, `hh-tp`, etc.) l
 ## 📂 Structure
 
 docs/
-├── ROADMAP.md # Full execution plan and task register
-├── ARCHITECTURE.md # System architecture, data flow diagrams
-├── DEPLOYMENT.md # VM, Docker, and Hyper Node setup
-├── FINANCIALS.md # Fee splits, Lightning treasury, node yields
-├── OPERATIONS.md # Runbooks, monitoring, and maintenance
-├── SECURITY.md # Access control, key rotation, and audits
-├── CHANGELOG.md # Task and milestone progress
-└── MEDIA/ # Diagrams and visual assets
+├── ROADMAP.md – Full execution plan and task register
+├── ARCHITECTURE.md – System architecture and data-flow diagrams
+├── DEPLOYMENT.md – VM, Docker, and Hyper Node setup guides
+├── FINANCIALS.md – Pool fee splits, Lightning treasury, and node yields
+├── OPERATIONS.md – Monitoring, backup, and maintenance runbooks
+├── SECURITY.md – Access control, key rotation, and audits
+├── CHANGELOG.md – Task and milestone progress
+└── MEDIA/ – Diagrams and visual assets
 
 ## 🚀 Key References
 
