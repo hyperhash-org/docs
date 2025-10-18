@@ -248,3 +248,100 @@ C142 — Config guide — All env vars & examples — 🧩 PLANNED
 C143 — Upgrade guide — Blue/green steps, rollback — 🧩 PLANNED
 
 C144 — Troubleshooting — Common errors, remedies — 🧩 PLANNED
+
+4.2 TEMPLATE PROVIDER (TP) — USING SJORS’ UPSTREAM (ALL 🧩 PLANNED)
+Upstream Strategy & Repo Management
+
+T001 — Fork upstream TP — Create hh-tp fork from <UPSTREAM_URL>; document license & attribution. — 🧩 PLANNED
+
+T002 — Pin baseline commit — Select a known-good tag/commit; record SHA in /VERSION. — 🧩 PLANNED
+
+T003 — Patch queue setup — Create patches/ with numbered series; apply via git am in CI. — 🧩 PLANNED
+
+T004 — Upstream sync workflow — Weekly rebase job; open “Update to <tag>” PR automatically. — 🧩 PLANNED
+
+T005 — GHCR mirror — Build and publish upstream TP image under ghcr.io/hyperhash-org/tp:<tag>-hh1. — 🧩 PLANNED
+
+T006 — License compliance — Add NOTICE, preserve upstream headers, SPDX scanning in CI. — 🧩 PLANNED
+
+Build & Packaging (Wrapper Only)
+
+T010 — Minimal wrapper binary — hh-tp-wrapper to load env/TOML, exec upstream TP, expose health. — 🧩 PLANNED
+
+T011 — Dockerfile (multi-stage) — Stage 1: build wrapper; Stage 2: copy upstream TP binary + wrapper. — 🧩 PLANNED
+
+T012 — Entry-point script — Start wrapper → validate bitcoind IPC → exec upstream TP; safe signals. — 🧩 PLANNED
+
+T013 — Systemd unit — hh-tp.service with Restart=on-failure, hardening options. — 🧩 PLANNED
+
+T014 — Config adapter — Map Hyper Hash env/TOML to upstream TP flags/paths. — 🧩 PLANNED
+
+Integration with Core & Nodes
+
+T020 — Core heartbeat shim — Wrapper posts /v1/tp/heartbeat (status, tip height, latency). — 🧩 PLANNED
+
+T021 — Template telemetry — Push template build time, tx count, mempool size to Core metrics. — 🧩 PLANNED
+
+T022 — Local/Remote TP toggle — Support env switch; wrapper enforces one active mode. — 🧩 PLANNED
+
+T023 — Translator feed check — Verify upstream TP emits artifacts compatible with our Translator. — 🧩 PLANNED
+
+T024 — TP directory registration — Announce TP endpoint to Core directory with mTLS. — 🧩 PLANNED
+
+T025 — Command channel hooks — Implement reload/rotate/debug via wrapper (Core-signed). — 🧩 PLANNED
+
+Bitcoin Core Plumbing
+
+T030 — IPC path validation — Detect bitcoind socket/host; backoff + jitter reconnect. — 🧩 PLANNED
+
+T031 — Chain mode flags — mainnet/signet/regtest support via env; audit upstream support. — 🧩 PLANNED
+
+T032 — Reorg handling audit — Confirm upstream behavior; add wrapper alarms on ≥2-block reorg. — 🧩 PLANNED
+
+Observability & Alerts
+
+T040 — Prometheus exporter — Wrapper exposes /metrics (template_latency_ms, tip_lag_blocks). — 🧩 PLANNED
+
+T041 — Structured logs — Route upstream stdout to Loki; add TP source labels. — 🧩 PLANNED
+
+T042 — Alert rules — Stale template > 30s, RPC error rate, reorgs, wrapper restarts. — 🧩 PLANNED
+
+Security & Hardening
+
+T050 — mTLS to Core — Wrapper uses node certs; verify CA pin; rotate certs. — 🧩 PLANNED
+
+T051 — Drop privileges — Run as tp user; read-only FS; CAP_NET_BIND_SERVICE only if needed. — 🧩 PLANNED
+
+T052 — Supply-chain scan — SBOM + vulnerability scan of upstream releases in CI. — 🧩 PLANNED
+
+Verification & Testing (with Upstream)
+
+T060 — Smoke test — Bring up bitcoind (signet), run upstream TP via wrapper; health OK. — 🧩 PLANNED
+
+T061 — Core integration test — Heartbeat visible at Core; metrics scraped; directory entry created. — 🧩 PLANNED
+
+T062 — Translator E2E — SV1 miner → Translator → upstream TP → Pool → share accepted. — 🧩 PLANNED
+
+T063 — Latency benchmark — Template build < 50 ms average; tip lag < 1 block. — 🧩 PLANNED
+
+T064 — Reorg simulation — Force reorg; wrapper logs event; Core alert fires. — 🧩 PLANNED
+
+T065 — Config reload — Change TOML; SIGHUP; no process exit; settings applied. — 🧩 PLANNED
+
+T066 — Failure injection — Kill bitcoind; upstream TP recovers; wrapper backoff respected. — 🧩 PLANNED
+
+T067 — Upgrade test — Rebase to new upstream tag; patch queue applies; no regressions. — 🧩 PLANNED
+
+T068 — Security test — mTLS required; reject invalid CA; clock skew tolerance. — 🧩 PLANNED
+
+Documentation (Upstream + Wrapper)
+
+T070 — README (Hyper Hash TP) — How to run upstream TP via wrapper (local/remote). — 🧩 PLANNED
+
+T071 — Config mapping table — Our env/TOML → upstream flags reference. — 🧩 PLANNED
+
+T072 — Ops runbook — Logs, metrics, restarts, safe rollback to prior tag. — 🧩 PLANNED
+
+T073 — Upgrade procedure — Rebase flow, patch queue conflicts, validation checklist. — 🧩 PLANNED
+
+T074 — Troubleshooting — IPC failures, stale templates, version mismatches. — 🧩 PLANNED
