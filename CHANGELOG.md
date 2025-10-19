@@ -1262,3 +1262,140 @@ D074 — Rollback playbook — Commands and verification after rollback. — �
 
 D075 — Launch report template — Metrics and results for public transparency. — 🧩 PLANNED
 
+4.9 DOCUMENTATION & BRAND — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+The Documentation & Brand track manages technical documentation, versioned wikis, community presentation, licensing, and consistent Hyper Hash visual identity across all properties.
+
+Repositories and Wiki Structure
+
+B001 — Create hyperhash-docs repo — Central hub for all markdown docs, diagrams, specs. — 🧩 PLANNED
+
+B002 — Docs structure — /architecture, /deployment, /financials, /roadmap, /security, /brand. — 🧩 PLANNED
+
+B003 — Wiki enablement — Mirror main docs into GitHub Wiki; cross-link all repos. — 🧩 PLANNED
+
+B004 — Auto-sync workflow — CI action to sync README sections to wiki nightly. — 🧩 PLANNED
+
+B005 — Docs versioning — Tag markdown docs per version (/v0, /v1, etc). — 🧩 PLANNED
+
+B006 — Style guide — Markdown lint rules, heading hierarchy, table formatting. — 🧩 PLANNED
+
+B007 — Contribution templates — ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE, CODE_OF_CONDUCT. — 🧩 PLANNED
+
+B008 — License uniformity — MIT for open repos; AGPL for pool core if required. — 🧩 PLANNED
+
+README Standards (All Repos)
+
+B010 — Standardized sections — Overview, Build, Config, Systemd, Troubleshooting, License. — 🧩 PLANNED
+
+B011 — Badge set — GitHub Actions status, License, Version, CodeQL scan. — 🧩 PLANNED
+
+B012 — Quickstart block — 10-line snippet for Docker or systemd install. — 🧩 PLANNED
+
+B013 — Visual overview — Architecture diagram + logo header in each README. — 🧩 PLANNED
+
+B014 — Link table — Cross-reference all Hyper Hash repos with purpose. — 🧩 PLANNED
+
+B015 — CHANGELOG anchors — Link each repo’s section back to central docs/CHANGELOG.md. — 🧩 PLANNED
+
+Visual Identity & Assets
+
+B020 — Brand asset pack — Logos (dark/light), lane colour palette, SVG icons. — 🧩 PLANNED
+
+B021 — Favicon & social previews — hh-pool.org OG image, social card generator. — 🧩 PLANNED
+
+B022 — Animation library — Node propagation waves, rainbow Bifrost link, miner flow visuals. — 🧩 PLANNED
+
+B023 — Typography rules — Inter + Space Mono; weights; size ratios for web/UI/docs. — 🧩 PLANNED
+
+B024 — Diagram theme — Consistent node/miner/core iconography in all figures. — 🧩 PLANNED
+
+B025 — Infographic templates — “How it Works” flow for pool and network pages. — 🧩 PLANNED
+
+B026 — Video renders — Animated Hyper Hash overview for hh-pool.org landing. — 🧩 PLANNED
+
+Community & Communications
+
+B030 — Public Discord setup — https://discord.com/channels/1409546566116839490/1410138982204838009
+ — 🧩 PLANNED
+
+B031 — Discord structure — Channels: #announcements, #miners, #nodes, #dev, #alerts. — 🧩 PLANNED
+
+B032 — GitHub Discussions — Enable in core + node repos; triage bot config. — 🧩 PLANNED
+
+B033 — Contributor guide — Fork/branch workflow, PR etiquette, issue tagging. — 🧩 PLANNED
+
+B034 — Governance charter — Define maintainers, voting, decision rules. — 🧩 PLANNED
+
+B035 — Weekly updates — GitHub Discussions summary of major progress. — 🧩 PLANNED
+
+B036 — Transparency log — Publish milestone updates + metrics every 30 days. — 🧩 PLANNED
+
+Knowledge & Education
+
+B040 — Whitepaper — Versioned PDF: architecture, economics, roadmap. — 🧩 PLANNED
+
+B041 — FAQ — Common setup, mining, payout questions. — 🧩 PLANNED
+
+B042 — Glossary — Terms: Stratum v2, Template Provider, Treasury, MMI, etc. — 🧩 PLANNED
+
+B043 — “For Miners” guide — Connect ASIC, understand rewards, performance metrics. — 🧩 PLANNED
+
+B044 — “For Node Operators” guide — Setup local TP, connect LN wallet, eligibility explained. — 🧩 PLANNED
+
+B045 — “For Developers” guide — Repo map, build steps, API examples. — 🧩 PLANNED
+
+B046 — Blog posts — Release notes, milestones, technical breakdowns. — 🧩 PLANNED
+
+B047 — Translation support — Localize key pages (EN, ES, DE, ZH). — 🧩 PLANNED
+
+Documentation Automation
+
+B050 — MkDocs + Material theme — Generate docs.hyperhash.net portal. — 🧩 PLANNED
+
+B051 — Auto-deploy docs — GitHub Pages deploy via main CI job. — 🧩 PLANNED
+
+B052 — Mermaid support — Enable diagrams in Markdown; CI pre-render. — 🧩 PLANNED
+
+B053 — Diagram CI — Check for broken links and syntax errors. — 🧩 PLANNED
+
+B054 — PDF builds — Weekly compiled bundle of all core documents. — 🧩 PLANNED
+
+B055 — Cross-link validator — CI step checks internal anchors and repo cross-refs. — 🧩 PLANNED
+
+Verification & Quality Review
+
+B060 — Spell & link check — CI pipeline on every docs PR. — 🧩 PLANNED
+
+B061 — Manual review process — Two maintainers sign off on versioned docs. — 🧩 PLANNED
+
+B062 — Design QA — Ensure new visuals align with brand pack. — 🧩 PLANNED
+
+B063 — Doc integrity test — Verify each Markdown has version/date header. — 🧩 PLANNED
+
+B064 — Snapshot archive — Keep static copies of all released docs per version. — 🧩 PLANNED
+
+Publication & Outreach
+
+B070 — hh-pool.org/info hub — Auto-publish docs to /info-* pages. — 🧩 PLANNED
+
+B071 — Social media presence — Twitter/X + Nostr updates via automated bot. — 🧩 PLANNED
+
+B072 — Release visuals — Branded artwork for each milestone. — 🧩 PLANNED
+
+B073 — Media kit — Logos, factsheet, contact emails. — 🧩 PLANNED
+
+B074 — Press release template — Auto-filled release notes summary. — 🧩 PLANNED
+
+Documentation (Meta)
+
+B080 — Documentation Roadmap — Timelines for major doc sets (architecture, financials). — 🧩 PLANNED
+
+B081 — Changelog governance — Policy for updating /docs/CHANGELOG.md. — 🧩 PLANNED
+
+B082 — Version stamping — Each doc stamped with hash + generation date. — 🧩 PLANNED
+
+B083 — Index manifest — JSON manifest of all docs + URLs. — 🧩 PLANNED
+
+B084 — Backup plan — Mirror docs repo to IPFS + S3. — 🧩 PLANNED
+
