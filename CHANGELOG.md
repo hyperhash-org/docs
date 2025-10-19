@@ -994,3 +994,148 @@ W102 — Theme guide — Lane colours, fonts, icons. — 🧩 PLANNED
 W103 — MMI manual — Screenshots + control explanations. — 🧩 PLANNED
 
 W104 — Troubleshooting — Common API errors, reconnects, config mismatches. — 🧩 PLANNED
+
+4.7 SECURITY & OPERATIONS — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+This section defines all core security practices, operational frameworks, CI/CD signing, observability, and continuity measures required to run the Hyper Hash Network safely in production.
+
+It applies globally across Core, Nodes, TP, Translator, Treasury, and Web UI.
+
+Repository & Infrastructure Governance
+
+S001 — Create org-wide SECURITY.md — Disclosure process, response time, contact. — 🧩 PLANNED
+
+S002 — Create CODEOWNERS in all repos — Enforce PR reviews by subsystem leads. — 🧩 PLANNED
+
+S003 — Branch protection rules — Require PR + review + signed commits on main. — 🧩 PLANNED
+
+S004 — Dependabot & npm audit — Weekly security scans and auto-PRs. — 🧩 PLANNED
+
+S005 — SBOM generator — Attach CycloneDX manifest on every GHCR image. — 🧩 PLANNED
+
+S006 — Secrets scanner — Enable GitHub Advanced Security + Gitleaks CI. — 🧩 PLANNED
+
+S007 — Signing enforcement — Require GPG or SSH-signed commits for maintainers. — 🧩 PLANNED
+
+S008 — Infrastructure-as-Code repo — Central Terraform/Ansible scripts with approvals. — 🧩 PLANNED
+
+Identity, Keys, and Certificates
+
+S010 — Internal CA — Generate Hyper Hash CA root + intermediates for mTLS. — 🧩 PLANNED
+
+S011 — Cert issuance service — Automated node certificates via Core API. — 🧩 PLANNED
+
+S012 — Rotation policy — Rotate every 90 days; revoke stale certs instantly. — 🧩 PLANNED
+
+S013 — Key storage — Vault/KMS for CA private keys; restricted operator access. — 🧩 PLANNED
+
+S014 — Wallet key isolation — Treasury & LN node seeds in HSM-backed key vaults. — 🧩 PLANNED
+
+S015 — API tokens — Short-lived JWTs with claim scopes (read, write, admin). — 🧩 PLANNED
+
+S016 — Signing hierarchy — Root → Core → Node → MMI (JWS chain). — 🧩 PLANNED
+
+Network Security & Hardening
+
+S020 — Firewall templates — UFW rulesets for Core, Node, TP, Translator, UI. — 🧩 PLANNED
+
+S021 — TLS baseline — TLS 1.3 only, ECDHE+AESGCM, OCSP stapling. — 🧩 PLANNED
+
+S022 — SSH policy — Key-only, no password login, fail2ban 3 strikes. — 🧩 PLANNED
+
+S023 — Port matrix — Maintain canonical doc of all open ports + protocols. — 🧩 PLANNED
+
+S024 — mTLS enforcement — All inter-service traffic signed by CA; test with self-audit. — 🧩 PLANNED
+
+S025 — DoS protection — SYN cookies, rate limits, ulimit for FDs. — 🧩 PLANNED
+
+S026 — DDoS front layer — Cloudflare or HAProxy config for HH-Core endpoints. — 🧩 PLANNED
+
+S027 — VPN mesh (optional) — WireGuard overlay for private Hyper Nodes. — 🧩 PLANNED
+
+Observability & Incident Response
+
+S030 — Central metrics — Prometheus federation from all services → Grafana Cloud. — 🧩 PLANNED
+
+S031 — Log aggregation — Loki/Vector stack for unified logs; retention 90 days. — 🧩 PLANNED
+
+S032 — Alert routing — Prometheus Alertmanager → Discord #alerts channel. — 🧩 PLANNED
+
+S033 — On-call rotation — Weekly Ops calendar; escalation to lead. — 🧩 PLANNED
+
+S034 — Incident template — Standard postmortem format: impact, root cause, actions. — 🧩 PLANNED
+
+S035 — Recovery drills — Quarterly simulated service loss recovery test. — 🧩 PLANNED
+
+S036 — Backup strategy — DB dumps, LN seeds, configs → encrypted offsite. — 🧩 PLANNED
+
+S037 — Restore tests — Quarterly restore-from-backup validation. — 🧩 PLANNED
+
+Compliance & Auditing
+
+S040 — Access logs — Signed, immutable append-only format. — 🧩 PLANNED
+
+S041 — Treasury audit — Daily signed payout summary → secure storage. — 🧩 PLANNED
+
+S042 — Key usage logs — Record every CA issuance & rotation. — 🧩 PLANNED
+
+S043 — Config audit trail — Track all system config changes via GitOps. — 🧩 PLANNED
+
+S044 — Legal compliance — GDPR/UK DPA notice (IPs + wallets pseudonymized). — 🧩 PLANNED
+
+S045 — External audit prep — Annual security and code audit by third party. — 🧩 PLANNED
+
+CI/CD & Deployment Security
+
+S050 — Pipeline isolation — Dedicated runners per repo; ephemeral containers. — 🧩 PLANNED
+
+S051 — Secrets management — GH environments with OIDC + short-lived tokens. — 🧩 PLANNED
+
+S052 — Image signing — cosign signatures for all GHCR builds. — 🧩 PLANNED
+
+S053 — Release verification — cosign verify check in deployment job. — 🧩 PLANNED
+
+S054 — SBOM check gate — Fail build if missing or outdated SBOM. — 🧩 PLANNED
+
+S055 — Rollback mechanism — Version pinning + revert script for Core, Node, Treasury. — 🧩 PLANNED
+
+Disaster Recovery & Business Continuity
+
+S060 — DR plan — Define RPO/RTO targets for each subsystem. — 🧩 PLANNED
+
+S061 — Geo-redundancy — Second region for Core/Treasury backups. — 🧩 PLANNED
+
+S062 — Cold standby nodes — Preconfigured VM images; deploy < 10 min. — 🧩 PLANNED
+
+S063 — Data integrity verification — Daily checksum comparison of backups. — 🧩 PLANNED
+
+S064 — Manual recovery guide — Step-by-step restoration instructions. — 🧩 PLANNED
+
+S065 — Power failure simulation — Validate reboot recovery; service dependencies. — 🧩 PLANNED
+
+Security Testing & Verification
+
+S070 — Vulnerability scans — Weekly OS + app-level scans. — 🧩 PLANNED
+
+S071 — Penetration testing — Annual external assessment of HH-Core and MMI. — 🧩 PLANNED
+
+S072 — Fuzz testing — API and message serialization fuzzers for SV2 stack. — 🧩 PLANNED
+
+S073 — Secret leakage tests — Automated scan before every release. — 🧩 PLANNED
+
+S074 — Permissions audit — Verify IAM roles least privilege. — 🧩 PLANNED
+
+S075 — Red team simulation — Yearly exercise across all production nodes. — 🧩 PLANNED
+
+Documentation (Security & Ops)
+
+S080 — Security Handbook — Policies, keys, rotations, checklists. — 🧩 PLANNED
+
+S081 — Ops Runbook — Monitoring, alert response, deploy/rollback, DR. — 🧩 PLANNED
+
+S082 — Incident Logbook — Markdown template for each incident. — 🧩 PLANNED
+
+S083 — Audit Guide — Steps to export, sign, and verify all reports. — 🧩 PLANNED
+
+S084 — Compliance Notice — Public-facing document for hh-pool.org/info-security. — 🧩 PLANNED
+
