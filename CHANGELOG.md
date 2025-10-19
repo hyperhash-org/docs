@@ -40,6 +40,37 @@ Date	Version	Milestone	Description
    
 4. TASK REGISTER MATRIX
 
+🔖 CHANGELOG INDEX — VERSION 0 (MASTER BACKLOG SUMMARY)
+Section	Subsystem	Description	Task Count	Status
+4.1	🧱 Core Plane	Pool, API, Ledger, Payouts, Treasury hooks, and Core services.	≈132	🧩 PLANNED
+4.2	⚙️ Template Provider (Sjors Fork)	Upstream Sjors TP integration, wrapper service, telemetry, and Core hooks.	≈60	🧩 PLANNED
+4.3	🔁 Translator (SRI Upstream)	Stratum V2 Translator bridge for SV1 miners; compatibility with HH Pool.	≈65	🧩 PLANNED
+4.4	🧠 Hyper Node Plane	Node Agent, MMI, local/remote TP, Translator, LN Wallet, eligibility tracking.	≈115	🧩 PLANNED
+4.5	⚡ Lightning Treasury	LN payout engine, fee splits, node rewards, reinvestment and reconciliation.	≈90	🧩 PLANNED
+4.6	🌐 Web UI / MMI Interfaces	Public pool dashboard and Node MMI (React UI, APIs, charts, telemetry).	≈85	🧩 PLANNED
+4.7	🔒 Security & Operations	Hardening, CI/CD signing, observability, keys, DR, incident management.	≈75	🧩 PLANNED
+4.8	🚀 Testing & Deployment	CI/CD pipeline, signet → mainnet rollout, regression & performance testing.	≈65	🧩 PLANNED
+4.9	📚 Documentation & Brand	Docs, wiki, visuals, governance, community, and media presence.	≈80	🧩 PLANNED
+
+🧩 Status Legend
+Icon	Meaning
+🧩	PLANNED — Task defined, not yet started.
+🔄	IN PROGRESS — Active development or testing.
+✅	COMPLETE — Merged, tested, verified on production.
+
+📈 Aggregate Totals
+Category	Count
+Subsystems	9
+Total Atomic Tasks (approx.)	~767
+Initial Status	All 🧩 PLANNED
+
+Execution Mode	GitHub-based CI/CD (track via PR references)
+
+Primary Communication Channels	Discord
+ + GitHub Issues/PRs
+
+Version	v0 — Foundational baseline, Signet to Mainnet scope.
+
 4.1 CORE PLANE DEVELOPMENT — TASKS (ALL 🧩 PLANNED)
 Repository, Build, and Scaffolding
 
