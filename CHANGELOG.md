@@ -1139,3 +1139,126 @@ S083 — Audit Guide — Steps to export, sign, and verify all reports. — 🧩
 
 S084 — Compliance Notice — Public-facing document for hh-pool.org/info-security. — 🧩 PLANNED
 
+4.8 TESTING & DEPLOYMENT — ENGINEERING-LEVEL TASKS (ALL 🧩 PLANNED)
+
+The testing and deployment stack governs all validation and rollout activity across Core, Nodes, TP, Translator, Treasury, and Web UI.
+It ensures each release can move through signet → pre-prod → mainnet safely, with reproducible builds and observable health gates.
+
+Repository & Environment Layout
+
+D001 — Create hh-deployment repo — Top-level IaC + CI/CD orchestration scripts. — 🧩 PLANNED
+
+D002 — Environments defined — signet, preprod, mainnet YAML profiles with URLs, secrets, and node counts. — 🧩 PLANNED
+
+D003 — Secrets pipeline — OIDC → Vault injection into CI runners; ephemeral tokens only. — 🧩 PLANNED
+
+D004 — GitHub environments — Use GH environment protections; approval gates per target. — 🧩 PLANNED
+
+D005 — Infra templates — Terraform for Core/Treasury; Ansible playbooks for Nodes. — 🧩 PLANNED
+
+D006 — Release matrix — Map repos, versions, image tags per environment. — 🧩 PLANNED
+
+Continuous Integration (Per Repo)
+
+D010 — Lint/Test pipeline — Runs on every PR; block merge on fail. — 🧩 PLANNED
+
+D011 — Build pipeline — Compile binaries, produce Docker images, sign with cosign. — 🧩 PLANNED
+
+D012 — Unit test stage — Execute all subsystem unit tests in CI containers. — 🧩 PLANNED
+
+D013 — Integration smoke stage — Compose up Core+TP+Translator; run 10-block signet test. — 🧩 PLANNED
+
+D014 — Artifact publish — Push signed images and SBOMs to GHCR. — 🧩 PLANNED
+
+D015 — Build provenance — Generate in-toto attestation for every artifact. — 🧩 PLANNED
+
+Continuous Delivery & Promotion
+
+D020 — Signet deploy job — Automatic on tag vX.Y.Z-signet; rollout to test infra. — 🧩 PLANNED
+
+D021 — Pre-prod deploy job — Manual approval required; blue/green with rollback. — 🧩 PLANNED
+
+D022 — Mainnet deploy job — After green pre-prod; release notes auto-attach. — 🧩 PLANNED
+
+D023 — Health gate check — Verify all /healthz and Prometheus targets pass post-deploy. — 🧩 PLANNED
+
+D024 — Canary rollout — 10 % node subset for 24 h observation before full rollout. — 🧩 PLANNED
+
+D025 — Rollback procedure — Auto-trigger if error rate > 5 % or metrics missing > 15 min. — 🧩 PLANNED
+
+D026 — Post-deploy validation — Confirm payouts, LN settlements, UI metrics. — 🧩 PLANNED
+
+Signet & Regression Testing
+
+D030 — Signet baseline testnet — Dedicated Core+TP+Translator+Treasury cluster. — 🧩 PLANNED
+
+D031 — Regression suite — Replay prior manifests and block templates; verify payout math. — 🧩 PLANNED
+
+D032 — Miner simulation — 100 simulated miners submit SV1/SV2 shares. — 🧩 PLANNED
+
+D033 — Node eligibility regression — Force uptime drops; check reward exclusion logic. — 🧩 PLANNED
+
+D034 — Treasury loopback — Use signet LN channels to verify reinvest + withdraw flows. — 🧩 PLANNED
+
+D035 — UI verification — Visual snapshot tests on signet telemetry pages. — 🧩 PLANNED
+
+D036 — Performance baseline — Record throughput, latency, payout times for comparison. — 🧩 PLANNED
+
+Pre-Production Staging
+
+D040 — Pre-prod mirror — Identical topology; real LN channels (test sats). — 🧩 PLANNED
+
+D041 — Load tests — 5 000 concurrent miner sessions; monitor CPU/mem. — 🧩 PLANNED
+
+D042 — Failover drills — Kill Core or Treasury; ensure auto-recovery. — 🧩 PLANNED
+
+D043 — Version-compat tests — Upgrade path: Core v1 → v2; Node v1 → v2. — 🧩 PLANNED
+
+D044 — Metrics audit — Compare pre-prod to signet regression baselines. — 🧩 PLANNED
+
+Mainnet Launch & Monitoring
+
+D050 — Launch checklist — Review security, audit, backups, channel liquidity. — 🧩 PLANNED
+
+D051 — Launch tag — Annotated Git tag signed by release key. — 🧩 PLANNED
+
+D052 — Initial block mining test — Validate Core→TP→Pool→Translator→Miner path. — 🧩 PLANNED
+
+D053 — Lightning payout test — 0.001 BTC test; confirm to Node wallet. — 🧩 PLANNED
+
+D054 — Node network sync — Ensure all nodes appear healthy in Core directory. — 🧩 PLANNED
+
+D055 — Treasury reconciliation — Verify 0.5 % splits; no missing invoices. — 🧩 PLANNED
+
+D056 — Real-time monitoring — Grafana “Mainnet Overview” dashboard live 24×7. — 🧩 PLANNED
+
+D057 — Launch announcement — Discord + GitHub release notes with hash signatures. — 🧩 PLANNED
+
+Post-Deployment Validation & Maintenance
+
+D060 — 24 h burn-in — Monitor metrics; alert thresholds tightened. — 🧩 PLANNED
+
+D061 — 7-day stability audit — Confirm payout accuracy, LN liquidity trends. — 🧩 PLANNED
+
+D062 — 30-day review — Publish performance report; close initial milestone. — 🧩 PLANNED
+
+D063 — Routine upgrades — Monthly image rebuilds with dependency bumps. — 🧩 PLANNED
+
+D064 — Patch releases — Hotfix pipeline (< 1 h turnaround) with rollback test. — 🧩 PLANNED
+
+D065 — Operator feedback loop — Discord #operations retrospective after each release. — 🧩 PLANNED
+
+Documentation (Testing & Deployment)
+
+D070 — Deployment guide — End-to-end steps from build → mainnet. — 🧩 PLANNED
+
+D071 — CI/CD flowcharts — Mermaid diagrams for GitHub Actions stages. — 🧩 PLANNED
+
+D072 — Regression test handbook — How to run and extend the signet suite. — 🧩 PLANNED
+
+D073 — Release checklist — Sign-off steps, reviewers, keys, artifact hashes. — 🧩 PLANNED
+
+D074 — Rollback playbook — Commands and verification after rollback. — 🧩 PLANNED
+
+D075 — Launch report template — Metrics and results for public transparency. — 🧩 PLANNED
+
